@@ -1,5 +1,6 @@
 // object to hold user list
 const users = {};
+const recipes = {};
 
 // function to send a json object
 const respondJSON = (request, response, status, object) => {
@@ -14,7 +15,7 @@ const respondJSON = (request, response, status, object) => {
 };
 const badRequest = (request, response) => {
   const responseJSON = {
-    message: 'Name and age are both required',
+    message: 'All Fields are required',
     id: 'missingParams',
   };
   respondJSON(request, response, 400, responseJSON);
@@ -50,6 +51,36 @@ const getUsers = (request, response) => {
   respondJSON(request, response, 200, users);
 };
 
+const getRecipes = (request, response) => {
+  // return object with users
+  respondJSON(request, response, 200, recipes);
+};
+
+const addRecipe = (request, response, params) => {
+  // if missing paramters, return bad request
+  console.log(params);
+  if (!params.name || !params.ingredients || !params.instructions) {
+    badRequest(request, response);
+    return;
+  }
+
+  const responseJSON = {
+    message: 'Created Successfully',
+    id: 'Create',
+  };
+  let status = 201;
+  if (recipes[params.name]) {
+    status = 204;
+  } else {
+    recipes[params.name] = {};
+  }
+  // add user to object
+  recipes[params.name].name = params.name;
+  recipes[params.name].time = params.time;
+
+  respondJSON(request, response, status, responseJSON);
+};
+
 // function to show not found error
 const notFound = (request, response) => {
   // error message with a description and consistent error id
@@ -70,4 +101,6 @@ module.exports = {
   notFound,
   addUser,
   badRequest,
+  getRecipes,
+  addRecipe,
 };

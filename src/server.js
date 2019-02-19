@@ -19,6 +19,8 @@ const urlStruct = {
   '/notReal': jsonHandler.notFound,
   '/addUser': jsonHandler.addUser,
   '/badRequest': jsonHandler.badRequest,
+  '/getRecipes' : jsonHandler.getRecipes,
+  '/addRecipe' : jsonHandler.addRecipe,
 };
 
 const post = (request, response, parsedUrl) => {
@@ -35,11 +37,11 @@ const post = (request, response, parsedUrl) => {
   request.on('data', (d) => {
     params.push(d);
   });
-
+  
   request.on('end', () => {
     const bodyString = Buffer.concat(params).toString();
     const bodyParams = query.parse(bodyString);
-
+    
     urlStruct[parsedUrl.pathname](request, response, bodyParams);
   });
 };
@@ -56,7 +58,7 @@ const onRequest = (request, response) => {
   const params = query.parse(parsedUrl.query);
 
   const type = request.headers.accept.split(',');
-
+  
   // check if the path name (the /name part of the url) matches
   // any in our url object. If so call that function. If not, default to index.
   if (request.method === 'POST') post(request, response, parsedUrl);
