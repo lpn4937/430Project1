@@ -22,7 +22,7 @@ html, body {
 a {
   color:white !important;
 }
-#searchBar {
+#searchRecipeForm {
   float: right;
   padding: 10px;
 }

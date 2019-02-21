@@ -40,10 +40,24 @@
           break;
       }
     };
+    const handleSearchResponse = (xhr) => {
+      // https://developer.edamam.com/edamam-docs-recipe-api
+      const type = xhr.getResponseHeader('content-type');
+      const content = document.querySelector("#content");
+
+      let resJSON = JSON.parse(xhr.response);
+      console.log(resJSON);
+
+      let text = ""
+      for(let x of resJSON.hits){
+        text += '<h1>' + x.recipe.label + '</h1>';
+      }
+      content.innerHTML = text;
+
+    };
 
     const getRecipes = (e, getRecipeForm) => {
-      //create a new xhr (ajax) request. 
-      //Remember that these are ASYNCHRONOUS
+      //create a new xhr (ajax) request.
       const xhr = new XMLHttpRequest();
       
       let action = getRecipeForm.querySelector('#urlField').value;
@@ -62,9 +76,38 @@
       return false;
     };
 
+    const searchRecipes = (e, searchRecipeForm) => {
+      //create a new xhr (ajax) request.
+      const xhr = new XMLHttpRequest();
+
+      let searchBar = searchRecipeForm.querySelector('#urlField').value;
+      if(!searchBar){
+        console.log("returning");
+        return;
+      }
+      let method = "get"
+      
+
+      let key = "de628a74de2ba8b3818ce52eec3a44c8";
+      let id = "acfd7b4d";
+      let url = `https://api.edamam.com/search?q=${searchBar}&app_id=${id}&app_key=${key}`
+      console.log(url);
+
+      //set the xhr to a GET request to a certain URL
+      xhr.open(method, url);
+
+      xhr.setRequestHeader ("Accept", 'application/json');
+      
+      //When the xhr loads, call handleResponse and pass the xhr object
+      xhr.onload = () => handleSearchResponse(xhr);
+      
+      //send our ajax request to the server
+      xhr.send();
+      return false;
+    }
+
     const addRecipe = (e, nameForm) => {
-      //create a new xhr (ajax) request. 
-      //Remember that these are ASYNCHRONOUS
+      //create a new xhr (ajax) request.
       const xhr = new XMLHttpRequest();
 
       let action = recipeForm.getAttribute('action');
@@ -92,10 +135,12 @@
     const init = () => {
       const recipeForm = document.querySelector("#recipeForm");
       const getRecipeForm = document.querySelector("#getRecipeForm");
+      const searchRecipeForm = document.querySelector("#searchRecipeForm");
 
 	   //attach the correct functions to the correct events
       recipeForm.addEventListener('submit', (e) => addRecipe(e, recipeForm));
       getRecipeForm.addEventListener('submit', (e) => getRecipes(e, getRecipeForm));
+      searchRecipeForm.addEventListener('submit', (e) => searchRecipes(e, searchRecipeForm));
     };
 
     window.onload = init;
@@ -105,8 +150,8 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="#">Navbar</a>
     <a class="navbar-brand" href="#">Navbar</a>
-    <form class="form-inline" id="searchBar">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <form onsubmit="event.preventDefault();" id="searchRecipeForm" action="/searchRecipe" method="get" class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search for Recipes Online" aria-label="Search" id='urlField'>
         <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
       </form>
   </nav>
