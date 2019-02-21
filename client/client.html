@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
   <title>Our simple HTTP server</title>
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"> -->
+  <link rel="stylesheet" type="text/css" href="/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="/style.css">
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script type="text/babel">
     //function to handle xhr response
@@ -38,30 +40,8 @@
           break;
       }
     };
-    
-    //function to send an xhr request
-    const getUsers = (e, userForm) => {
-      //create a new xhr (ajax) request. 
-      //Remember that these are ASYNCHRONOUS
-      const xhr = new XMLHttpRequest();
-      
-      let action = userForm.querySelector('#urlField').value;
-      let method = userForm.querySelector('#methodSelect').value;
-      
-      //set the xhr to a GET request to a certain URL
-      xhr.open(method, action);
 
-      xhr.setRequestHeader ("Accept", 'application/json');
-      
-      //When the xhr loads, call handleResponse and pass the xhr object
-      xhr.onload = () => handleResponse(xhr);
-      console.log("Test");
-      //send our ajax request to the server
-      xhr.send();
-      return false;
-    };
-
-    const getRecipes = (e, userForm) => {
+    const getRecipes = (e, getRecipeForm) => {
       //create a new xhr (ajax) request. 
       //Remember that these are ASYNCHRONOUS
       const xhr = new XMLHttpRequest();
@@ -81,31 +61,6 @@
       xhr.send();
       return false;
     };
-
-    const addUser = (e, nameForm) => {
-      //create a new xhr (ajax) request. 
-      //Remember that these are ASYNCHRONOUS
-      const xhr = new XMLHttpRequest();
-
-      let action = nameForm.getAttribute('action');
-      let method = nameForm.getAttribute('method');
-
-      let name = nameForm.querySelector('#nameField').value;
-      let age = nameForm.querySelector('#ageField').value;
-
-      //set the xhr to a GET request to a certain URL
-      xhr.open(method, action);
-
-      xhr.setRequestHeader ("Accept", 'application/json');
-
-      //When the xhr loads, call handleResponse and pass the xhr object
-      xhr.onload = () => handleResponse(xhr);
-      
-      const data = `name=${name}&age=${age}`;
-      //send our ajax request to the server
-      xhr.send(data);
-      return false;
-    }
 
     const addRecipe = (e, nameForm) => {
       //create a new xhr (ajax) request. 
@@ -135,14 +90,10 @@
     }
 
     const init = () => {
-      const nameForm = document.querySelector("#nameForm");
-      const userForm = document.querySelector("#userForm");
       const recipeForm = document.querySelector("#recipeForm");
       const getRecipeForm = document.querySelector("#getRecipeForm");
 
 	   //attach the correct functions to the correct events
-      nameForm.addEventListener('submit', (e) => addUser(e, nameForm));
-      userForm.addEventListener('submit', (e) => getUsers(e, userForm));
       recipeForm.addEventListener('submit', (e) => addRecipe(e, recipeForm));
       getRecipeForm.addEventListener('submit', (e) => getRecipes(e, getRecipeForm));
     };
@@ -151,26 +102,15 @@
   </script>
 </head>
 <body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">Navbar</a>
+    <form class="form-inline" id="searchBar">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+      </form>
+  </nav>
   <section id="top">
-    <h3>POST Status Code Tests</h3>
-    <form onsubmit="event.preventDefault();" id="nameForm" action="/addUser" method="post">
-      <label for="name">Name: </label>
-      <input id="nameField" type="text" name="name" />
-      <label for="age">Age: </label>
-      <input id="ageField" type="number" name="age" min="0" max="100" step="1"/>
-      <input type="submit" value="Add User" />
-    </form>
-    <form onsubmit="event.preventDefault();" id="userForm" action="/getUsers" method="get">
-      <select id='urlField'>
-        <option value='/getUsers'>/getUsers</option>
-        <option value='/notReal'>/notReal</option>
-      </select>
-      <select id="methodSelect">
-        <option value="get">GET</option>
-        <option value="head">HEAD</option>
-      </select>
-      <input type="submit" value="Get User" />
-    </form>
     <h3>Add Recipe Test</h3>
     <form onsubmit="event.preventDefault();" id="recipeForm" action="/addRecipe" method="post">
       <!-- Name of the recipe -->
@@ -190,7 +130,7 @@
     </form>
     <form onsubmit="event.preventDefault();" id="getRecipeForm" action="/getRecipes" method="get">
       <select id='urlField'>
-        <option value='/getUsers'>/getRecipes</option>
+        <option value='/getRecipes'>/getRecipes</option>
         <option value='/notReal'>/notReal</option>
       </select>
       <select id="methodSelect">

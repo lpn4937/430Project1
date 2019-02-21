@@ -58,7 +58,7 @@ const getRecipes = (request, response) => {
 
 const addRecipe = (request, response, params) => {
   // if missing paramters, return bad request
-  console.log(params);
+
   if (!params.name || !params.ingredients || !params.instructions) {
     badRequest(request, response);
     return;
@@ -77,6 +77,8 @@ const addRecipe = (request, response, params) => {
   // add user to object
   recipes[params.name].name = params.name;
   recipes[params.name].time = params.time;
+  recipes[params.name].ingredients = params.ingredients;
+  recipes[params.name].instructions = params.instructions;
 
   respondJSON(request, response, status, responseJSON);
 };

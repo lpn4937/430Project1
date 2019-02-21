@@ -15,6 +15,7 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 const urlStruct = {
   '/': htmlHandler.getIndex,
   '/style.css': htmlHandler.getCSS,
+  '/bootstrap.css' : htmlHandler.getBootstrap,
   '/getUsers': jsonHandler.getUsers,
   '/notReal': jsonHandler.notFound,
   '/addUser': jsonHandler.addUser,
@@ -57,15 +58,15 @@ const onRequest = (request, response) => {
   // and parse them into a reusable object by field name
   const params = query.parse(parsedUrl.query);
 
-  const type = request.headers.accept.split(',');
+  //const type = request.headers.accept.split(',');
   
   // check if the path name (the /name part of the url) matches
   // any in our url object. If so call that function. If not, default to index.
   if (request.method === 'POST') post(request, response, parsedUrl);
   else if (urlStruct[parsedUrl.pathname]) {
-    urlStruct[parsedUrl.pathname](request, response, params, type);
+    urlStruct[parsedUrl.pathname](request, response, params);
   } else {
-    urlStruct['/notReal'](request, response, params, type);
+    urlStruct['/notReal'](request, response, params);
   }
 };
 

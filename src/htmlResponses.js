@@ -6,6 +6,7 @@ const fs = require('fs'); // pull in the file system module
 // synchronous operations or load entire files into memory.
 const index = fs.readFileSync(`${__dirname}/../client/client.html`);
 const styles = fs.readFileSync(`${__dirname}/../client/style.css`, { encoding: 'utf8' });
+const bootStyles = fs.readFileSync(`${__dirname}/../client/bootstrap.css`, { encoding: 'utf8' });
 
 // function to handle the index page
 const getIndex = (request, response) => {
@@ -21,6 +22,10 @@ const getCSS = (request, response) => {
   response.writeHead(200, { 'Content-Type': 'text/css' });
   response.write(styles, () => { response.end(); });
 };
+const getBootstrap = (request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/css' });
+  response.write(bootStyles, () => { response.end(); });
+};
 
 // exports to set functions to public.
 // In this syntax, you can do getIndex:getIndex, but if they
@@ -28,4 +33,5 @@ const getCSS = (request, response) => {
 module.exports = {
   getIndex,
   getCSS,
+  getBootstrap,
 };
