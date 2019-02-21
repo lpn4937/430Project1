@@ -18,7 +18,7 @@
       
 	    //if the response was in json
       let message = xhr.response? JSON.parse(xhr.response).message || (xhr.response) : "";
-      
+      console.log(JSON.parse(xhr.response));
       switch (xhr.status) {
         case 200:
           content.innerHTML = `<b>Success</b><p>${message}</p>`
