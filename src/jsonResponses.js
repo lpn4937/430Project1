@@ -9,7 +9,7 @@ const respondJSON = (request, response, status, object) => {
 
   // stringify the object (so it doesn't use references/pointers/etc)
   response.write(JSON.stringify(object));
-
+  
   // Send the response to the client
   response.end();
 };

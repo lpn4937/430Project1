@@ -41,6 +41,7 @@
       }
     };
     const handleSearchResponse = (xhr) => {
+      // handles responses from the external API
       // https://developer.edamam.com/edamam-docs-recipe-api
       const type = xhr.getResponseHeader('content-type');
       const content = document.querySelector("#content");
@@ -48,11 +49,17 @@
       let resJSON = JSON.parse(xhr.response);
       console.log(resJSON);
 
+      // Build tabel from the results
       let text = ""
       for(let x of resJSON.hits){
-        text += '<h1>' + x.recipe.label + '</h1>';
+        text += `<div class="col-sm-4 searchResults">
+                  <div>${x.recipe.label}</div>
+                  <div><img src="${x.recipe.image}"></div>
+                  <div><a href="${x.recipe.url}">Recipe Link</a></div>
+                </div>`;
       }
-      content.innerHTML = text;
+      let division = `<div class="container text-center"><div class="row">${text}</div></div>`
+      content.innerHTML = division;
 
     };
 
@@ -81,13 +88,10 @@
       const xhr = new XMLHttpRequest();
 
       let searchBar = searchRecipeForm.querySelector('#urlField').value;
-      if(!searchBar){
-        console.log("returning");
-        return;
-      }
+      if(!searchBar) return;
+
       let method = "get"
       
-
       let key = "de628a74de2ba8b3818ce52eec3a44c8";
       let id = "acfd7b4d";
       let url = `https://api.edamam.com/search?q=${searchBar}&app_id=${id}&app_key=${key}`
@@ -148,30 +152,41 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" id="seeRecipes" href="">My Recipes</a>
+    <a class="navbar-brand" id="addRecipe" href="">Add Recipes</a>
     <form onsubmit="event.preventDefault();" id="searchRecipeForm" action="/searchRecipe" method="get" class="form-inline">
         <input class="form-control mr-sm-2" type="search" placeholder="Search for Recipes Online" aria-label="Search" id='urlField'>
         <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
       </form>
   </nav>
   <section id="top">
-    <h3>Add Recipe Test</h3>
+    <h3>Add a Recipe</h3>
     <form onsubmit="event.preventDefault();" id="recipeForm" action="/addRecipe" method="post">
       <!-- Name of the recipe -->
-      <label for="name">Name: </label>
-      <input id="nameField" type="text" name="name" />
+      <div class="form-group">
+        <label for="name">Recipe Name: </label>
+        <input id="nameField" class="form-control" type="text" name="name" />
+      </div>
       <!-- Time required to make the recipe -->
-      <label for="time">Time: </label>
-      <input id="timeField" type="number" name="time" min="0" max="1000" step="1"/>
-      <!-- Ingredients -->
-      <label for="ingredients">Ingredients: </label>
-      <input id="ingredientsField" type="text" name="ingredients" />
-      <!-- Instructions -->
-      <label for="instructions">Instructions: </label>
-      <input id="instructionsField" type="text" name="instructions" />
+      <div class="form-group">
+        <label for="time">Total Time: </label>
+        <input id="timeField" class="form-control" type="number" name="time" min="0" max="1000" step="1"/>
+      </div>
       
-      <input type="submit" value="Add Recipe" />
+      <!-- Ingredients -->
+      <div class="form-group">
+        <label for="ingredients">Ingredients: </label>
+        <input id="ingredientsField" class="form-control" type="text" name="ingredients" />
+      </div>
+      
+      <!-- Instructions -->
+      <div class="form-group">
+        <label for="instructions">Instructions: </label>
+        <input id="instructionsField" class="form-control" type="text" name="instructions" />
+      </div>
+      
+      
+      <input type="submit" class="btn btn-primary" value="Add Recipe" />
     </form>
     <form onsubmit="event.preventDefault();" id="getRecipeForm" action="/getRecipes" method="get">
       <select id='urlField'>
