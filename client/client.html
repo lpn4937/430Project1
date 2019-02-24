@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Our simple HTTP server</title>
+  <title>Recipe Reader</title>
   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"> -->
   <link rel="stylesheet" type="text/css" href="/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="/style.css">
@@ -52,16 +52,18 @@
       // Build tabel from the results
       let text = ""
       for(let x of resJSON.hits){
-        text += `<div class="card" style="width: 18rem;">
-                  <img class="card-img-top" src="${x.recipe.image}" alt="${x.recipe.label}">
-                  <div class="card-body">
-                    <h5 class="card-title">${x.recipe.label}</h5>
-                    <p class="card-text"></p>
-                  </div>
-                    
+        text += `<div class="col-sm-4 card-margin">
+                  <div class="card">
+                    <img class="card-img-top" src="${x.recipe.image}" alt="${x.recipe.label}">
+                    <div class="card-body">
+                      <h5 class="card-title">${x.recipe.label}</h5>
+                      <p class="card-text">Calories: ${Math.floor(x.recipe.calories)}</p>
+                      <a href="${x.recipe.url}" class="btn btn-primary">View Recipe</a>
+                    </div>
+                   </div> 
                 </div>`;
       }
-      let division = `<div class="container text-center"><div class="row">${text}</div></div>`
+      let division = `<div class="container results"><div class="row">${text}</div></div>`
       content.innerHTML = division;
 
     };
@@ -154,13 +156,19 @@
   </script>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" id="seeRecipes" href="">My Recipes</a>
-    <a class="navbar-brand" id="addRecipe" href="">Add Recipes</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary justify-content-between">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" id="seeRecipes" href="#">My Recipes <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item" id="addRecipe">
+        <a class="nav-link active" href="#">Add Recipes </a>
+      </li>
+    </ul>
     <form onsubmit="event.preventDefault();" id="searchRecipeForm" action="/searchRecipe" method="get" class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search for Recipes Online" aria-label="Search" id='urlField'>
+        <input class="form-control mr-sm-2" type="search" placeholder="Search for Recipes" aria-label="Search" id='urlField'>
         <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-      </form>
+    </form>
   </nav>
   <section id="top">
     <h3>Add a Recipe</h3>

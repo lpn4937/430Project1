@@ -24,13 +24,19 @@ html, body {
 
 #content {
   margin-top: 10px;
-  font-size: 2em;
   /* text-align: center; */
-}
-nav a {
-  color:white !important;
 }
 #searchRecipeForm {
   float: right;
   padding: 10px;
+}
+.results{
+  width: 100%;
+  margin: 0 auto;
+}
+.card-margin{
+  margin-top: 20px;
+}
+.nav-item{
+  font-size: 1.5em;
 }

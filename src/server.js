@@ -20,6 +20,7 @@ const urlStruct = {
   '/badRequest': jsonHandler.badRequest,
   '/getRecipes': jsonHandler.getRecipes,
   '/addRecipe': jsonHandler.addRecipe,
+  '/favicon.ico':htmlHandler.getFavicon,
 };
 
 const post = (request, response, parsedUrl) => {
