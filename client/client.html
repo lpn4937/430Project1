@@ -5,6 +5,7 @@
   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"> -->
   <link rel="stylesheet" type="text/css" href="/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="/style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script type="text/babel">
@@ -72,8 +73,8 @@
       //create a new xhr (ajax) request.
       const xhr = new XMLHttpRequest();
       
-      let action = getRecipeForm.querySelector('#urlField').value;
-      let method = getRecipeForm.querySelector('#methodSelect').value;
+      let action = "/getRecipes";
+      let method = "get";
       
       //set the xhr to a GET request to a certain URL
       xhr.open(method, action);
@@ -143,13 +144,17 @@
 
     const init = () => {
       const recipeForm = document.querySelector("#recipeForm");
-      const getRecipeForm = document.querySelector("#getRecipeForm");
       const searchRecipeForm = document.querySelector("#searchRecipeForm");
 
 	   //attach the correct functions to the correct events
       recipeForm.addEventListener('submit', (e) => addRecipe(e, recipeForm));
-      getRecipeForm.addEventListener('submit', (e) => getRecipes(e, getRecipeForm));
       searchRecipeForm.addEventListener('submit', (e) => searchRecipes(e, searchRecipeForm));
+
+      const myRecipes = document.querySelector("#seeRecipes");
+      const newRecipe = document.querySelector("#addRecipe");
+
+      myRecipes.onclick = getRecipes;
+      newRecipe.onclick = (e) => {};
     };
 
     window.onload = init;
@@ -195,20 +200,7 @@
         <label for="instructions">Instructions: </label>
         <input id="instructionsField" class="form-control" type="text" name="instructions" />
       </div>
-      
-      
       <input type="submit" class="btn btn-primary" value="Add Recipe" />
-    </form>
-    <form onsubmit="event.preventDefault();" id="getRecipeForm" action="/getRecipes" method="get">
-      <select id='urlField'>
-        <option value='/getRecipes'>/getRecipes</option>
-        <option value='/notReal'>/notReal</option>
-      </select>
-      <select id="methodSelect">
-        <option value="get">GET</option>
-        <option value="head">HEAD</option>
-      </select>
-      <input type="submit" value="Get Recipe" />
     </form>
   </section>
   <section id="content">
