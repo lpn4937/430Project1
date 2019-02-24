@@ -3,8 +3,14 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
+  background: #eeeeee;
 }
-
+.pageForm{
+  padding: 10px;
+  background: white;
+  border: 1px solid white;
+  border-radius: 10px;
+}
 #top {
   /* text-align: center; */
   padding-left: 20%;
@@ -27,9 +33,4 @@ nav a {
 #searchRecipeForm {
   float: right;
   padding: 10px;
-}
-img {
-  width: 50%;
-  margin: auto;
-  padding-top: 0;
 }

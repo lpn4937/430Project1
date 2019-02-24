@@ -52,10 +52,13 @@
       // Build tabel from the results
       let text = ""
       for(let x of resJSON.hits){
-        text += `<div class="col-sm-4 searchResults">
-                  <div>${x.recipe.label}</div>
-                  <div><img src="${x.recipe.image}"></div>
-                  <div><a href="${x.recipe.url}">Recipe Link</a></div>
+        text += `<div class="card" style="width: 18rem;">
+                  <img class="card-img-top" src="${x.recipe.image}" alt="${x.recipe.label}">
+                  <div class="card-body">
+                    <h5 class="card-title">${x.recipe.label}</h5>
+                    <p class="card-text"></p>
+                  </div>
+                    
                 </div>`;
       }
       let division = `<div class="container text-center"><div class="row">${text}</div></div>`
@@ -161,7 +164,7 @@
   </nav>
   <section id="top">
     <h3>Add a Recipe</h3>
-    <form onsubmit="event.preventDefault();" id="recipeForm" action="/addRecipe" method="post">
+    <form onsubmit="event.preventDefault();" id="recipeForm" class="pageForm" action="/addRecipe" method="post">
       <!-- Name of the recipe -->
       <div class="form-group">
         <label for="name">Recipe Name: </label>
