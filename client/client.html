@@ -19,7 +19,6 @@
       
 	    //if the response was in json
       let message = xhr.response? JSON.parse(xhr.response).message || (xhr.response) : "";
-      console.log(JSON.parse(xhr.response));
       switch (xhr.status) {
         case 200:
           content.innerHTML = `<b>Success</b><p>${message}</p>`
@@ -66,7 +65,32 @@
       }
       let division = `<div class="container results"><div class="row">${text}</div></div>`
       content.innerHTML = division;
+    };
+    const handleGetResponse = (xhr) => {
+      // handles responses from the external API
+      // https://developer.edamam.com/edamam-docs-recipe-api
+      const type = xhr.getResponseHeader('content-type');
+      const content = document.querySelector("#content");
 
+      let resJSON = JSON.parse(xhr.response);
+
+      // Build tabel from the results
+      let text = ""
+      for(let x in resJSON){
+        text += `<div col-sm-4 class="card-margin">
+                  <div class="card">
+                    <h5 class="card-header">${resJSON[x].name}</h5?
+                    <div class="card-body">
+                      <h5 class="card-title">${resJSON[x].name}</h5>
+                      <p class="card-text">Time: ${resJSON[x].time}</p>
+                      <p class="card-text">Ingredients: ${resJSON[x].ingredients}</p>
+                      <p class="card-text">Instructions: ${resJSON[x].instructions}</p>
+                    </div>
+                   </div> 
+                </div>`;
+      }
+      let division = `<div class="container results"><div class="row">${text}</div></div>`
+      content.innerHTML = division;
     };
 
     const getRecipes = (e, getRecipeForm) => {
@@ -82,7 +106,7 @@
       xhr.setRequestHeader ("Accept", 'application/json');
       
       //When the xhr loads, call handleResponse and pass the xhr object
-      xhr.onload = () => handleResponse(xhr);
+      xhr.onload = () => handleGetResponse(xhr);
       
       //send our ajax request to the server
       xhr.send();
@@ -100,8 +124,7 @@
       
       let key = "de628a74de2ba8b3818ce52eec3a44c8";
       let id = "acfd7b4d";
-      let url = `https://api.edamam.com/search?q=${searchBar}&app_id=${id}&app_key=${key}`
-      console.log(url);
+      let url = `https://api.edamam.com/search?q=${searchBar}&app_id=${id}&app_key=${key}`;
 
       //set the xhr to a GET request to a certain URL
       xhr.open(method, url);

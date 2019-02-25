@@ -1,4 +1,4 @@
-// object to hold user list
+// object to hold recipe list
 const users = {};
 const recipes = {};
 
@@ -19,36 +19,6 @@ const badRequest = (request, response) => {
     id: 'missingParams',
   };
   respondJSON(request, response, 400, responseJSON);
-};
-
-const addUser = (request, response, params) => {
-  // if missing paramters, return bad request
-  if (!params.name || !params.age) {
-    badRequest(request, response);
-    return;
-  }
-
-  const responseJSON = {
-    message: 'Created Successfully',
-    id: 'Create',
-  };
-  let status = 201;
-  if (users[params.name]) {
-    status = 204;
-  } else {
-    users[params.name] = {};
-  }
-  // add user to object
-  users[params.name].name = params.name;
-  users[params.name].age = params.age;
-
-  respondJSON(request, response, status, responseJSON);
-};
-
-// function to show a success status code
-const getUsers = (request, response) => {
-  // return object with users
-  respondJSON(request, response, 200, users);
 };
 
 const getRecipes = (request, response) => {
@@ -99,9 +69,7 @@ const notFound = (request, response) => {
 // In this syntax, you can do getIndex:getIndex, but if they
 // are the same name, you can short handle to just getIndex,
 module.exports = {
-  getUsers,
   notFound,
-  addUser,
   badRequest,
   getRecipes,
   addRecipe,
