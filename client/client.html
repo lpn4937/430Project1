@@ -92,7 +92,9 @@
     };
 
     const getRecipes = (e, getRecipeForm) => {
+      // gets all the recipes the user has entered
       document.querySelector("#top").style.display = "none";
+      document.querySelector("#content").style.display = "block";
       //create a new xhr (ajax) request.
       const xhr = new XMLHttpRequest();
       
@@ -112,7 +114,32 @@
       return false;
     };
 
+    const getQuickRecipes = (e, getRecipeForm) => {
+      // Gets recipes that are under 30 minutes
+      // alternate times can be used with the url
+      document.querySelector("#top").style.display = "none";
+      document.querySelector("#content").style.display = "block";
+      //create a new xhr (ajax) request.
+      const xhr = new XMLHttpRequest();
+      
+      let action = "/getRecipes?quick=true&time=30";
+      let method = "get";
+
+      //set the xhr to a GET request to a certain URL
+      xhr.open(method, action);
+
+      xhr.setRequestHeader ("Accept", 'application/json');
+      
+      //When the xhr loads, call handleResponse and pass the xhr object
+      xhr.onload = () => handleGetResponse(xhr);
+      
+      //send our ajax request to the server
+      xhr.send();
+      return false;
+    };
+
     const searchRecipes = (e, searchRecipeForm) => {
+      // search for recipies from an external api
       document.querySelector("#top").style.display = "none";
       //create a new xhr (ajax) request.
       const xhr = new XMLHttpRequest();
@@ -140,12 +167,13 @@
     }
 
     const addRecipe = (e, nameForm) => {
-      //create a new xhr (ajax) request.
+      // add a new recipe to the server's list of recipes
       const xhr = new XMLHttpRequest();
 
       let action = recipeForm.getAttribute('action');
       let method = recipeForm.getAttribute('method');
 
+      // get information from the form
       let name = recipeForm.querySelector('#nameField').value;
       let time = recipeForm.querySelector('#timeField').value;
       let ingredients = recipeForm.querySelector('#ingredientsField').value;
@@ -166,6 +194,7 @@
     }
 
     const init = () => {
+      // initialize events
       const recipeForm = document.querySelector("#recipeForm");
       const searchRecipeForm = document.querySelector("#searchRecipeForm");
 
@@ -173,13 +202,18 @@
       recipeForm.addEventListener('submit', (e) => addRecipe(e, recipeForm));
       searchRecipeForm.addEventListener('submit', (e) => searchRecipes(e, searchRecipeForm));
 
+      // navigation buttons
       const myRecipes = document.querySelector("#seeRecipes");
+      const myQuickRecipes = document.querySelector("#seeQuickRecipes");
       const newRecipe = document.querySelector("#addRecipe");
 
+      // two sections on the page
       const top = document.querySelector("#top");
       const content = document.querySelector("#content");
 
+      // attach buttons with events
       myRecipes.onclick = getRecipes;
+      myQuickRecipes.onclick = getQuickRecipes;
       newRecipe.onclick = (e) => {top.style.display = "block"; content.style.display = "none"};
     };
 
@@ -194,6 +228,9 @@
       </li>
       <li class="nav-item" id="addRecipe">
         <a class="nav-link active" href="#">Add Recipes </a>
+      </li>
+      <li class="nav-item" id="seeQuickRecipes">
+        <a class="nav-link active" href="#">My Quick Recipes </a>
       </li>
     </ul>
     <form onsubmit="event.preventDefault();" id="searchRecipeForm" action="/searchRecipe" method="get" class="form-inline">

@@ -21,9 +21,16 @@ const badRequest = (request, response) => {
   respondJSON(request, response, 400, responseJSON);
 };
 
-const getRecipes = (request, response) => {
+const getRecipes = (request, response, params) => {
   // return object with users
-  respondJSON(request, response, 200, recipes);
+  let quickRecipies = {};
+  if(params.quick){
+    for(let x in recipes){
+      if(parseInt(recipes[x].time) <= parseInt(params.time)) quickRecipies[recipes[x].name] = recipes[x];
+    }
+    respondJSON(request, response, 200, quickRecipies);
+  }
+  else respondJSON(request, response, 200, recipes);
 };
 
 const addRecipe = (request, response, params) => {
