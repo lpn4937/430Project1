@@ -1,5 +1,4 @@
 // object to hold recipe list
-const users = {};
 const recipes = {};
 
 // function to send a json object
@@ -9,7 +8,7 @@ const respondJSON = (request, response, status, object) => {
 
   // stringify the object (so it doesn't use references/pointers/etc)
   response.write(JSON.stringify(object));
-  
+
   // Send the response to the client
   response.end();
 };
@@ -22,20 +21,25 @@ const badRequest = (request, response) => {
 };
 
 const getRecipes = (request, response, params) => {
-  // return object with users
-  let quickRecipies = {};
-  if(params.quick){
-    for(let x in recipes){
-      if(parseInt(recipes[x].time) <= parseInt(params.time)) quickRecipies[recipes[x].name] = recipes[x];
-    }
+  // return object with recipes
+
+  const quickRecipies = {};
+  // if quick param is true, only return recipes under certain time
+  const temp = Object.values(recipes);
+  if (params.quick) {
+    temp.forEach((value) => {
+      if (parseInt(value.time, 10) <= parseInt(params.time, 10)) {
+        quickRecipies[value.name] = recipes[value.name];
+      }
+    });
     respondJSON(request, response, 200, quickRecipies);
-  }
-  else respondJSON(request, response, 200, recipes);
+  } else respondJSON(request, response, 200, recipes);
 };
 
 const addRecipe = (request, response, params) => {
-  // if missing paramters, return bad request
+  // add a recipe to the list
 
+  // if missing paramters, return bad request
   if (!params.name || !params.ingredients || !params.instructions) {
     badRequest(request, response);
     return;
@@ -45,13 +49,16 @@ const addRecipe = (request, response, params) => {
     message: 'Recipe Created Successfully',
     id: 'Create',
   };
+
   let status = 201;
+  // if a recipe with that name already exists, update the existing one
   if (recipes[params.name]) {
     status = 204;
   } else {
     recipes[params.name] = {};
   }
-  // add user to object
+
+  // add recipe params to object
   recipes[params.name].name = params.name;
   recipes[params.name].time = params.time;
   recipes[params.name].ingredients = params.ingredients;

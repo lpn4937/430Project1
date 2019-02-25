@@ -20,7 +20,7 @@ const urlStruct = {
   '/badRequest': jsonHandler.badRequest,
   '/getRecipes': jsonHandler.getRecipes,
   '/addRecipe': jsonHandler.addRecipe,
-  '/favicon.ico':htmlHandler.getFavicon,
+  '/favicon.ico': htmlHandler.getFavicon,
 };
 
 const post = (request, response, parsedUrl) => {
@@ -46,11 +46,9 @@ const post = (request, response, parsedUrl) => {
   });
 };
 
-// handle HTTP requests. In node the HTTP server will automatically
-// send this function request and pre-filled response objects.
+// handle HTTP requests.
 const onRequest = (request, response) => {
   // parse the url using the url module
-  // This will let us grab any section of the URL by name
   const parsedUrl = url.parse(request.url);
 
   // grab the query parameters (?key=value&key2=value2&etc=etc)

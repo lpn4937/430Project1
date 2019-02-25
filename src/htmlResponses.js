@@ -20,17 +20,20 @@ const getIndex = (request, response) => {
 };
 
 const getCSS = (request, response) => {
+  // send css file from server
   response.writeHead(200, { 'Content-Type': 'text/css' });
   response.write(styles, () => { response.end(); });
 };
 const getBootstrap = (request, response) => {
+  // send bootstrap file from server
   response.writeHead(200, { 'Content-Type': 'text/css' });
   response.write(bootStyles, () => { response.end(); });
 };
 const getFavicon = (request, response) => {
+  // send icon file from server
   response.writeHead(200, { 'Content-Type': 'image/x-icon' });
   response.write(favicon, () => { response.end(); });
-}
+};
 
 // exports to set functions to public.
 // In this syntax, you can do getIndex:getIndex, but if they
