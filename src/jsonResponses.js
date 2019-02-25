@@ -35,7 +35,7 @@ const addRecipe = (request, response, params) => {
   }
 
   const responseJSON = {
-    message: 'Created Successfully',
+    message: 'Recipe Created Successfully',
     id: 'Create',
   };
   let status = 201;

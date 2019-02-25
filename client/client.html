@@ -21,22 +21,22 @@
       let message = xhr.response? JSON.parse(xhr.response).message || (xhr.response) : "";
       switch (xhr.status) {
         case 200:
-          content.innerHTML = `<b>Success</b><p>${message}</p>`
+          content.innerHTML = `<div class="row results"><div class="card col-lg-12 text-center"><b>Success</b><p>${message}</p></div><div>`
           break;
         case 201:
-          content.innerHTML = `<b>Created</b><p>${message}</p>`
+          content.innerHTML = `<div class="row results"><div class="card col-lg-12 text-center"><b>Created</b><p>${message}</p></div><div>`
           break;
         case 204:
-          content.innerHTML = `<b>Updated</b><p>${message}</p>`
+          content.innerHTML = `<div class="row results"><div class="card col-lg-12 text-center"><b>Updated</b><p>${message}</p></div><div>`
           break;
         case 404:
-          content.innerHTML = `<b>Not Found</b><p>${message}</p>`
+          content.innerHTML = `<div class="row results"><div class="card col-lg-12 text-center"><b>Not Found</b><p>${message}</p></div><div>`
           break;
         case 400:
-          content.innerHTML = `<b>Bad Request</b><p>${message}</p>`
+          content.innerHTML = `<div class="row results"><div class="card col-lg-12 text-center"><b>Bad Request</b><p>${message}</p></div><div>`
           break;
         default:
-          content.innerHTML = `<b>Error: Code not implemented by client</b><p>Status code: ${xhr.status}</p>`
+          content.innerHTML = `<div class="row results"><div class="card col-lg-12 text-center"><b>Error: Code not implemented by client</b><p>Status code: ${xhr.status}</p></div><div>`
           break;
       }
     };
@@ -47,7 +47,6 @@
       const content = document.querySelector("#content");
 
       let resJSON = JSON.parse(xhr.response);
-      console.log(resJSON);
 
       // Build tabel from the results
       let text = ""
@@ -77,11 +76,10 @@
       // Build tabel from the results
       let text = ""
       for(let x in resJSON){
-        text += `<div col-sm-4 class="card-margin">
+        text += `<div class="col-lg-12 card-margin">
                   <div class="card">
-                    <h5 class="card-header">${resJSON[x].name}</h5?
+                    <h5 class="card-header">${resJSON[x].name}</h5>
                     <div class="card-body">
-                      <h5 class="card-title">${resJSON[x].name}</h5>
                       <p class="card-text">Time: ${resJSON[x].time}</p>
                       <p class="card-text">Ingredients: ${resJSON[x].ingredients}</p>
                       <p class="card-text">Instructions: ${resJSON[x].instructions}</p>
@@ -94,6 +92,7 @@
     };
 
     const getRecipes = (e, getRecipeForm) => {
+      document.querySelector("#top").style.display = "none";
       //create a new xhr (ajax) request.
       const xhr = new XMLHttpRequest();
       
@@ -114,6 +113,7 @@
     };
 
     const searchRecipes = (e, searchRecipeForm) => {
+      document.querySelector("#top").style.display = "none";
       //create a new xhr (ajax) request.
       const xhr = new XMLHttpRequest();
 
@@ -176,8 +176,11 @@
       const myRecipes = document.querySelector("#seeRecipes");
       const newRecipe = document.querySelector("#addRecipe");
 
+      const top = document.querySelector("#top");
+      const content = document.querySelector("#content");
+
       myRecipes.onclick = getRecipes;
-      newRecipe.onclick = (e) => {};
+      newRecipe.onclick = (e) => {top.style.display = "block"; content.style.display = "none"};
     };
 
     window.onload = init;
